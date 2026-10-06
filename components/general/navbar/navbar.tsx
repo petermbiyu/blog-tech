@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import Logo from "./logo";
-import { LuSearch, LuNotebookPen } from "react-icons/lu";
+import { LuSearch, LuNotebookPen, LuX, LuMenu  } from "react-icons/lu";
 import MobileNav from "./mobileNav";
 import { useState } from "react";
 
@@ -39,9 +39,12 @@ const Navbar = () => {
           <li className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer">
             Login
           </li>
+          <li className="cursor-pointer md:hidden z-80" onClick={()=> setMenuOpen(pre => !pre)}>
+            {menuOpen ? <LuX size={25}/>:  <LuMenu size={25} />}
+          </li>
         </ul>
       </div>
-      <MobileNav />
+      <MobileNav menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
     </div>
   );
 };
