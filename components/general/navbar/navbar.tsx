@@ -1,13 +1,13 @@
 "use client";
 import Link from "next/link";
 import Logo from "./logo";
-import { LuSearch, LuNotebookPen, LuX, LuMenu  } from "react-icons/lu";
+import { LuSearch, LuNotebookPen, LuX, LuMenu } from "react-icons/lu";
 import MobileNav from "./mobileNav";
 import { useState } from "react";
 
 export const navLinks = [
   { url: "/", label: "Home" },
-  { url: "/article", label: "Article" },
+  { url: "/articles", label: "Articles" },
   { url: "/about", label: "About" },
 ];
 
@@ -22,9 +22,11 @@ const Navbar = () => {
             <LuSearch size={20} />
             <span className="hidden md:block">Search</span>
           </li>
-          <li className="cursor-pointer flex items-center gap-1">
-            <LuNotebookPen size={20} />
-            <span className="hidden md:block">Write</span>
+          <li className="cursor-pointer">
+            <Link href={"/write"} className="flex items-center gap-1">
+              <LuNotebookPen size={20} />
+              <span className="hidden md:block">Write</span>
+            </Link>
           </li>
           {navLinks.map((link) => {
             return (
@@ -39,8 +41,11 @@ const Navbar = () => {
           <li className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer">
             Login
           </li>
-          <li className="cursor-pointer md:hidden z-80" onClick={()=> setMenuOpen(pre => !pre)}>
-            {menuOpen ? <LuX size={25}/>:  <LuMenu size={25} />}
+          <li
+            className="cursor-pointer md:hidden z-80"
+            onClick={() => setMenuOpen((pre) => !pre)}
+          >
+            {menuOpen ? <LuX size={25} /> : <LuMenu size={25} />}
           </li>
         </ul>
       </div>
