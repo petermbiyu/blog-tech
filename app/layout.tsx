@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/general/navbar/navbar";
 import Footer from "@/components/general/footer";
+import SignInModal from "@/components/modals/signInModal";
+import SearchModel from "@/components/modals/searchModel";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -25,6 +27,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Navbar />
         {children}
         <Footer />
+        <SignInModal />
+        <SearchModel />
       </body>
     </html>
   );
