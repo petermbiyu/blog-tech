@@ -1,38 +1,40 @@
+"use client";
+import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "react-hot-toast";
 import { LuArrowRight } from "react-icons/lu";
 
-export const posts = [
-  {
-    id: 1,
-    title: "Is PHP really dead or is it a myth",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 12, 2026",
-    slug: "is-php-really-dead-or-is-it-a-myth",
-    image: "/images/p1.png",
-  },
-  {
-    id: 2,
-    title: "Dark Mode Done Right in Tailwindcss",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 25, 2026",
-    slug: "dark-mode-done-right-in-tailwindcss",
-    image: "/images/p2.png",
-  },
-  {
-    id: 3,
-    title: "WHy clean UI matter for blogs",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 12, 2026",
-    slug: "why-clean-UI-matter-for-blogs",
-    image: "/images/p3.png",
-  },
-];
+interface PostProp {
+  id: string;
+  title: string;
+  excerpt: string;
+  content: string;
+  slug: string;
+  coverImageURL: string;
+  createdAt: string;
+}
 
 const RecentPosts = () => {
+  const [data, setData] = useState<PostProp[]>([]);
+
+  const recentPost = async () => {
+    try {
+      const response = await axios.get("/api/posts/recent");
+
+      if (response?.data.success) {
+        setData(response.data.post);
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        toast(error.response?.data.message);
+      }
+    }
+  };
+  useEffect(() => {
+    recentPost();
+  }, []);
   return (
     <div className="space-y-2 mb-10">
       <h2 className="text-white text-xl mb-10 sm:text-2xl md:text-3xl font-semibold ">
@@ -40,7 +42,7 @@ const RecentPosts = () => {
       </h2>
       {/* post cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {posts.map((post) => {
+        {data.map((post) => {
           return (
             <div
               key={post.id}
@@ -49,7 +51,7 @@ const RecentPosts = () => {
               {/* image */}
               <div className="relative h-48 w-full overflow-hidden">
                 <Image
-                  src={post.image}
+                  src={post.coverImageURL}
                   alt={post.title}
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                   fill
@@ -58,7 +60,13 @@ const RecentPosts = () => {
               </div>
               {/* content */}
               <div className="py space-y-3">
-                <time>{post.date}</time>
+                <time className="text-xs text-gray-400">
+                  {new Date(post.createdAt).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                  })}
+                </time>
                 <h2 className="text-lg font-semibold text-white leading-snug group-hover:text-indigo-400 transition-colors ">
                   {post.title}
                 </h2>

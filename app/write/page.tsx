@@ -1,8 +1,8 @@
 "use client";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import { useState, useRef, useMemo } from "react";
-import toast from "react-hot-toast";
+import { useState, useRef, useMemo, FormEvent } from "react";
+import { toast } from "react-hot-toast";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
 
@@ -27,8 +27,9 @@ const Write = () => {
     [],
   );
 
-  const handleSubmit = async (e: React.SubmitEvent) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       if (!title || !content || !excerpt || !coverImage) {
         console.log("All fields are required");
@@ -42,6 +43,20 @@ const Write = () => {
       formData.append("content", content);
       formData.append("excerpt", excerpt);
       formData.append("coverImage", coverImage);
+
+      const response = await axios.post("/api/posts", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      setContent("");
+      setTitle("");
+      setExcerpt("");
+      setCoverImage(null);
+      if (response?.data.success) {
+        toast("Article published successfully");
+      }
     } catch (error) {
       if (axios.isAxiosError(error)) {
         toast(error.response?.data.error, {
@@ -58,7 +73,7 @@ const Write = () => {
       <h1 className="text-3xl font-bold text-white mb-10">
         Write a new article
       </h1>
-      <form>
+      <form onSubmit={handleSubmit}>
         {/* title  */}
         <input
           type="text"
@@ -98,7 +113,7 @@ const Write = () => {
           />
         </div>
         <button className="px-6 py-3 rounded-full bg-primary cursor-pointer text-white font-semibold transition-colors">
-          Publish
+          {isSubmitting ? "Publishing..." : "Publish"}
         </button>
       </form>
     </section>

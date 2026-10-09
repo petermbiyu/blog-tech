@@ -2,7 +2,36 @@ import ContainerLayout from "@/layouts/containerLayout";
 import Image from "next/image";
 import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
-import { posts } from "@/components/home/recentPosts";
+
+const posts = [
+  {
+    id: 1,
+    title: "Is PHP really dead or is it a myth",
+    excerpt:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
+    date: "sep 12, 2026",
+    slug: "is-php-really-dead-or-is-it-a-myth",
+    image: "/images/p1.png",
+  },
+  {
+    id: 2,
+    title: "Dark Mode Done Right in Tailwindcss",
+    excerpt:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
+    date: "sep 25, 2026",
+    slug: "dark-mode-done-right-in-tailwindcss",
+    image: "/images/p2.png",
+  },
+  {
+    id: 3,
+    title: "WHy clean UI matter for blogs",
+    excerpt:
+      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
+    date: "sep 12, 2026",
+    slug: "why-clean-UI-matter-for-blogs",
+    image: "/images/p3.png",
+  },
+];
 
 const Articles = () => {
   return (

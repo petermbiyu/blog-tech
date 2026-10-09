@@ -53,7 +53,7 @@ export async function POST(req: Request) {
       },
     });
     return NextResponse.json(
-      { success: true, message: "success" },
+      { success: true, post, message: "success" },
       { status: 201 },
     );
   } catch (error) {
