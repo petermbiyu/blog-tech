@@ -5,6 +5,7 @@ import Navbar from "@/components/general/navbar/navbar";
 import Footer from "@/components/general/footer";
 import SignInModal from "@/components/modals/signInModal";
 import SearchModel from "@/components/modals/searchModel";
+import { Toaster } from "react-hot-toast";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -29,6 +30,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Footer />
         <SignInModal />
         <SearchModel />
+        <Toaster />
       </body>
     </html>
   );
