@@ -1,14 +1,54 @@
 import { auth } from "@/lib/auth";
 import slugify from "slugify";
 import { headers } from "next/headers";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import {
   CloudinaryUploadResult,
   uploadToCloudinary,
 } from "@/services/cloudinary";
 
-export async function POST(req: Request) {
+export async function GET(req: NextRequest) {
+  try {
+    const { searchParams } = new URL(req.url);
+    // const id = searchParams.get("id")
+    const default_limit = 3;
+    const limit = Number(searchParams.get("limit")) || default_limit;
+    const cursor = searchParams.get("cursor");
+
+    const posts = await prisma.post.findMany({
+      take: limit + 1,
+      orderBy: { createdAt: "desc" },
+      cursor: cursor ? { id: cursor } : undefined,
+      skip: cursor ? 1 : 0,
+      select: {
+        id: true,
+        excerpt: true,
+        title: true,
+        slug: true,
+        coverImageURL: true,
+        createdAt: true,
+      },
+    });
+    // has more posts
+    const hasMore = posts.length > limit;
+    const items = hasMore ? posts.slice(0, limit) : posts;
+    const nextCursor = hasMore ? items[items.length - 1].id : null;
+
+    return NextResponse.json(
+      { success: true, posts: items, nextCursor },
+      { status: 200 },
+    );
+  } catch (error) {
+    console.error("Fetch_Post_error:", error);
+    return NextResponse.json(
+      { success: false, message: "failed to fetch posts" },
+      { status: 500 },
+    );
+  }
+}
+
+export async function POST(req: NextRequest) {
   try {
     const session = await auth.api.getSession({ headers: await headers() });
     if (!session?.user.id) {

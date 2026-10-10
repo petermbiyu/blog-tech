@@ -1,39 +1,33 @@
+"use client";
+import { useInfintePosts } from "@/custom-hooks/usePost";
 import ContainerLayout from "@/layouts/containerLayout";
+import PostCard from "@/skeletons/postCard";
 import Image from "next/image";
 import Link from "next/link";
 import { LuArrowRight } from "react-icons/lu";
 
-const posts = [
-  {
-    id: 1,
-    title: "Is PHP really dead or is it a myth",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 12, 2026",
-    slug: "is-php-really-dead-or-is-it-a-myth",
-    image: "/images/p1.png",
-  },
-  {
-    id: 2,
-    title: "Dark Mode Done Right in Tailwindcss",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 25, 2026",
-    slug: "dark-mode-done-right-in-tailwindcss",
-    image: "/images/p2.png",
-  },
-  {
-    id: 3,
-    title: "WHy clean UI matter for blogs",
-    excerpt:
-      "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Possimus laborum commodi harum explicabo ab quas assumenda reiciendis. Quo, saepe quos impedit corrupti aperiam enim eos voluptatem porro velit tempora commodi accusamus architecto fugit animi quod repudiandae voluptatum minima id at.",
-    date: "sep 12, 2026",
-    slug: "why-clean-UI-matter-for-blogs",
-    image: "/images/p3.png",
-  },
-];
-
 const Articles = () => {
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
+    useInfintePosts({ limit: 1 });
+  if (status === "pending") {
+    return (
+      <ContainerLayout>
+        <h2 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold">
+          All Articles
+        </h2>
+        <PostCard />
+      </ContainerLayout>
+    );
+  }
+  if (status === "error") {
+    return (
+      <ContainerLayout>
+        <p className="text-gray-400">Error Loading...</p>
+      </ContainerLayout>
+    );
+  }
+
+  const posts = data.pages.flatMap((page) => page.posts) ?? [];
   return (
     <ContainerLayout>
       <div className="space-y-6">
@@ -49,18 +43,20 @@ const Articles = () => {
                 className="group rounded-xl overflow-hidden bg-[#0B0B0B] border pb-5 border-white/10 transition-all duration-300 hover:-translate-y-1 hover:border-white/20"
               >
                 {/* image */}
-                <div className="relative h-48 w-full overflow-hidden">
-                  <Image
-                    src={post.image}
-                    alt={post.title}
-                    className="object-cover transition-transform duration-500 group-hover:scale-105"
-                    fill
-                  />
-                  <div className="absolute inset-0 bg-black/30" />
-                </div>
+                {post.coverImageURL && (
+                  <div className="relative h-48 w-full overflow-hidden">
+                    <Image
+                      src={post.coverImageURL}
+                      alt={post.title}
+                      className="object-cover transition-transform duration-500 group-hover:scale-105"
+                      fill
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                  </div>
+                )}
                 {/* content */}
                 <div className="py space-y-3">
-                  <time>{post.date}</time>
+                  <time>{post.createdAt}</time>
                   <h2 className="text-lg font-semibold text-white leading-snug group-hover:text-indigo-400 transition-colors ">
                     {post.title}
                   </h2>
@@ -78,11 +74,17 @@ const Articles = () => {
             );
           })}
         </div>
-        <div className="flex justify-center mt-10 ">
-          <button className="px-8 py-3 rounded-full bg-secondary-background text-gray-300 text-sm font-medium border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 cursor-pointer">
-            Load more articles
-          </button>
-        </div>
+        {hasNextPage && (
+          <div className="flex justify-center mt-10 ">
+            <button
+              onClick={() => fetchNextPage()}
+              disabled={isFetchingNextPage}
+              className="px-8 py-3 rounded-full bg-secondary-background text-gray-300 text-sm font-medium border border-white/10 hover:border-white/20 hover:text-white transition-all duration-300 cursor-pointer"
+            >
+              {isFetchingNextPage ? "Fetching..." : "Load more articles"}
+            </button>
+          </div>
+        )}
       </div>
     </ContainerLayout>
   );

@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
-    const post = await prisma.post.findMany({
+    const posts = await prisma.post.findMany({
       orderBy: { createdAt: "desc" },
       select: {
         id: true,
@@ -15,7 +15,7 @@ export async function GET() {
       },
       take: 6,
     });
-    return NextResponse.json({ success: true, post }, { status: 200 });
+    return NextResponse.json({ success: true, posts }, { status: 200 });
   } catch (error) {
     console.error("Fetch_recent_post_error", error);
     return NextResponse.json(

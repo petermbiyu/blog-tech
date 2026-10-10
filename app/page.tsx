@@ -1,5 +1,6 @@
 import RecentPosts from "@/components/home/recentPosts";
 import ContainerLayout from "@/layouts/containerLayout";
+import PostCard from "@/skeletons/postCard";
 import Image from "next/image";
 import Link from "next/link";
 import { Suspense } from "react";
@@ -52,7 +53,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Suspense fallback={<p className="text-gray-400">Loading...</p>}>
+      <Suspense fallback={<PostCard />}>
         <RecentPosts />
       </Suspense>
     </ContainerLayout>

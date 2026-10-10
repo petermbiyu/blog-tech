@@ -1,40 +1,17 @@
-"use client";
-import axios from "axios";
+import { PostProp } from "@/types/posts";
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { toast } from "react-hot-toast";
 import { LuArrowRight } from "react-icons/lu";
 
-interface PostProp {
-  id: string;
-  title: string;
-  excerpt: string;
-  content: string;
-  slug: string;
-  coverImageURL: string;
-  createdAt: string;
-}
+const RecentPosts = async () => {
+  const response = await fetch(`${process.env.BASE_URL}/api/posts/recent`, {
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch recent posts");
+  }
+  const { posts }: { posts: PostProp[] } = await response.json();
 
-const RecentPosts = () => {
-  const [data, setData] = useState<PostProp[]>([]);
-
-  const recentPost = async () => {
-    try {
-      const response = await axios.get("/api/posts/recent");
-
-      if (response?.data.success) {
-        setData(response.data.post);
-      }
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        toast(error.response?.data.message);
-      }
-    }
-  };
-  useEffect(() => {
-    recentPost();
-  }, []);
   return (
     <div className="space-y-2 mb-10">
       <h2 className="text-white text-xl mb-10 sm:text-2xl md:text-3xl font-semibold ">
@@ -42,7 +19,7 @@ const RecentPosts = () => {
       </h2>
       {/* post cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {data.map((post) => {
+        {posts.map((post) => {
           return (
             <div
               key={post.id}
