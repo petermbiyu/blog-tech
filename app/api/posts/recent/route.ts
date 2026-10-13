@@ -13,7 +13,7 @@ export async function GET() {
         coverImageURL: true,
         createdAt: true,
       },
-      take: 6,
+      take: 3,
     });
     return NextResponse.json({ success: true, posts }, { status: 200 });
   } catch (error) {

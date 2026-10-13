@@ -1,7 +1,10 @@
-const PostCard = () => {
+interface LimitProp {
+  limit: number;
+}
+const PostCard = ({ limit }: LimitProp) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
-      {[...Array(3)].map((_, index) => (
+      {[...Array(limit)].map((_, index) => (
         <div
           key={index}
           className="rounded-xl overflow-hidden bg-[#0b0b0b] border border-white/10 animate-pulse"

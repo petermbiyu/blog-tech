@@ -8,14 +8,14 @@ import { LuArrowRight } from "react-icons/lu";
 
 const Articles = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, status } =
-    useInfintePosts({ limit: 1 });
+    useInfintePosts({ limit: 3 });
   if (status === "pending") {
     return (
       <ContainerLayout>
         <h2 className="text-xl sm:text-2xl md:text-3xl text-white font-semibold">
           All Articles
         </h2>
-        <PostCard />
+        <PostCard limit={6} />
       </ContainerLayout>
     );
   }

@@ -53,7 +53,7 @@ export default function Home() {
           </div>
         </div>
       </div>
-      <Suspense fallback={<PostCard />}>
+      <Suspense fallback={<PostCard limit={3} />}>
         <RecentPosts />
       </Suspense>
     </ContainerLayout>
