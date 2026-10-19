@@ -1,0 +1,87 @@
+"use client";
+import Link from "next/link";
+import Logo from "./logo";
+import { LuSearch, LuNotebookPen, LuX, LuMenu } from "react-icons/lu";
+import MobileNav from "./mobileNav";
+import { useState } from "react";
+import { useModalStore } from "@/app/store/useModalStore";
+import { authClient } from "@/lib/auth-client";
+
+export const navLinks = [
+  { url: "/", label: "Home" },
+  { url: "/articles", label: "Articles" },
+  { url: "/about", label: "About" },
+];
+
+const Navbar = () => {
+  const { openSignIn, openSearch } = useModalStore();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const { data: session, isPending } = authClient.useSession();
+
+  const handleLogout = async () => {
+    await authClient.signOut();
+  };
+  return (
+    <div className="h-18 w-full fixed top-0 left-0 z-50 backdrop-blur-xl backdrop-saturate-50">
+      <div className="flex items-center justify-between h-full w-[90%] mx-auto">
+        <Logo />
+        <ul className="flex items-center gap-4 md:gap-8 text-gray-400 font-semibold">
+          <li
+            onClick={openSearch}
+            className="cursor-pointer flex items-center gap-1"
+          >
+            <LuSearch size={20} />
+            <span className="hidden md:block">Search</span>
+          </li>
+          {session && (
+            <li className="cursor-pointer">
+              <Link href={"/write"} className="flex items-center gap-1">
+                <LuNotebookPen size={20} />
+                <span className="hidden md:block">Write</span>
+              </Link>
+            </li>
+          )}
+          {navLinks.map((link) => {
+            return (
+              <li
+                key={link.url}
+                className="hidden md:block hover:text-gray-200"
+              >
+                <Link href={link.url}>{link.label}</Link>
+              </li>
+            );
+          })}
+          {!isPending && (
+            <>
+              {session ? (
+                <li
+                  onClick={handleLogout}
+                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer"
+                >
+                  Logout
+                </li>
+              ) : (
+                <li
+                  onClick={openSignIn}
+                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer"
+                >
+                  Login
+                </li>
+              )}
+            </>
+          )}
+
+          <li
+            className="cursor-pointer md:hidden z-80"
+            onClick={() => setMenuOpen((pre) => !pre)}
+          >
+            {menuOpen ? <LuX size={25} /> : <LuMenu size={25} />}
+          </li>
+        </ul>
+      </div>
+      <MobileNav menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+    </div>
+  );
+};
+
+export default Navbar;

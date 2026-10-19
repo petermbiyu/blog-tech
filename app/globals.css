@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+@theme {
+  --color-background: #000000;
+  --color-primary: #1e3a8a;
+  --color-secondary-background: #121212;
+  --color-hover: #181818;
+}
+
+.blog-post h2 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 10px 0;
+  color: white;
+}
+.blog-post h3 {
+  font-size: 1.3rem;
+  font-weight: 500;
+  padding: 10px 0;
+  font-style: italic;
+  color: white;
+}
