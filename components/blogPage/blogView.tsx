@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
 import { LuArrowLeft, LuPen, LuTrash } from "react-icons/lu";
+import DeletePost from "./deletePost";
 
 interface PostPromiseProp {
   postPromise: Promise<{
@@ -69,17 +70,12 @@ const BlogView = ({ postPromise }: PostPromiseProp) => {
       {userId === post?.author.id && (
         <div className="flex items-center gap-2 justify-end">
           <Link
-            href={"#"}
+            href={`/write/edit/${post?.id}`}
             className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-indigo-400 border border-indigo-400/20 hover:border-indigo-400/40 hover:bg-indigo-400/10 transition-all"
           >
             <LuPen /> Edit
           </Link>
-          <button
-            type="button"
-            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-red-400 border border-red-400/20 hover:border-red-400/40 hover:bg-red-400/10 transition-all cursor-pointer disabled:cursor-not-allowed"
-          >
-            <LuTrash /> Delete
-          </button>
+          {post?.id && <DeletePost postId={post?.id} />}
         </div>
       )}
       <div className="mt-16 ">

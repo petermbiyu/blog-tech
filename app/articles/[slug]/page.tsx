@@ -1,5 +1,6 @@
 import BlogView from "@/components/blogPage/blogView";
 import { PostBySlug } from "@/server-actions/post";
+import PostView from "@/skeletons/postView";
 import { Suspense } from "react";
 
 const ArticleView = async ({
@@ -10,7 +11,7 @@ const ArticleView = async ({
   const slug = (await params).slug;
   const postPromise = PostBySlug(slug);
   return (
-    <Suspense fallback={<p className="text-gray-300">Loading...</p>}>
+    <Suspense fallback={<PostView />}>
       <BlogView postPromise={postPromise} />
     </Suspense>
   );
