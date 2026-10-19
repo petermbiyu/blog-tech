@@ -1,4 +1,5 @@
-import { date } from "better-auth";
+"use client";
+import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
@@ -23,6 +24,8 @@ interface PostPromiseProp {
 
 const BlogView = ({ postPromise }: PostPromiseProp) => {
   const post = use(postPromise);
+  const { data: session } = authClient.useSession();
+  const userId = session?.user.id;
   return (
     <article className="max-w-3xl mx-auto py-20 px-6 ">
       {/* header  */}
@@ -63,20 +66,22 @@ const BlogView = ({ postPromise }: PostPromiseProp) => {
       )}
 
       <div className="border-t border-white/10 my-16" />
-      <div className="flex items-center gap-2 justify-end">
-        <Link
-          href={"#"}
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-indigo-400 border border-indigo-400/20 hover:border-indigo-400/40 hover:bg-indigo-400/10 transition-all"
-        >
-          <LuPen /> Edit
-        </Link>
-        <button
-          type="button"
-          className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-red-400 border border-red-400/20 hover:border-red-400/40 hover:bg-red-400/10 transition-all cursor-pointer disabled:cursor-not-allowed"
-        >
-          <LuTrash /> Delete
-        </button>
-      </div>
+      {userId === post?.author.id && (
+        <div className="flex items-center gap-2 justify-end">
+          <Link
+            href={"#"}
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-indigo-400 border border-indigo-400/20 hover:border-indigo-400/40 hover:bg-indigo-400/10 transition-all"
+          >
+            <LuPen /> Edit
+          </Link>
+          <button
+            type="button"
+            className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium text-red-400 border border-red-400/20 hover:border-red-400/40 hover:bg-red-400/10 transition-all cursor-pointer disabled:cursor-not-allowed"
+          >
+            <LuTrash /> Delete
+          </button>
+        </div>
+      )}
       <div className="mt-16 ">
         <Link
           href={"/articles"}

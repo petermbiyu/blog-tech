@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import dynamic from "next/dynamic";
-import { useState, useRef, useMemo, FormEvent } from "react";
+import { useState, useRef, useMemo } from "react";
 import { toast } from "react-hot-toast";
 
 const JoditEditor = dynamic(() => import("jodit-react"), { ssr: false });
