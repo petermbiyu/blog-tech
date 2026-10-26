@@ -28,13 +28,13 @@ const Navbar = () => {
         <ul className="flex items-center gap-4 md:gap-8 text-gray-400 font-semibold">
           <li
             onClick={openSearch}
-            className="cursor-pointer flex items-center gap-1"
+            className="cursor-pointer flex items-center gap-1 z-80"
           >
             <LuSearch size={20} />
             <span className="hidden md:block">Search</span>
           </li>
           {session && (
-            <li className="cursor-pointer">
+            <li className="cursor-pointer z-80">
               <Link href={"/write"} className="flex items-center gap-1">
                 <LuNotebookPen size={20} />
                 <span className="hidden md:block">Write</span>
@@ -45,7 +45,7 @@ const Navbar = () => {
             return (
               <li
                 key={link.url}
-                className="hidden md:block hover:text-gray-200"
+                className="hidden md:block hover:text-gray-200 z-80"
               >
                 <Link href={link.url}>{link.label}</Link>
               </li>
@@ -56,14 +56,14 @@ const Navbar = () => {
               {session ? (
                 <li
                   onClick={handleLogout}
-                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer"
+                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer z-80"
                 >
                   Logout
                 </li>
               ) : (
                 <li
                   onClick={openSignIn}
-                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer"
+                  className="bg-primary text-gray-200 px-3 lg:px-5 py-2 rounded-full cursor-pointer z-80"
                 >
                   Login
                 </li>
