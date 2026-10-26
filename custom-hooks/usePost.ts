@@ -6,6 +6,7 @@ import {
   useQueryClient,
 } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export function useInfintePosts({ limit }: { limit: number }) {
   return useInfiniteQuery<FetchPostResponse>({
@@ -31,4 +32,14 @@ export function useDeletePost() {
       alert("failed to delete post");
     },
   });
+}
+
+export function useDebounce<T>(value: T, delay = 300) {
+  const [debounceValue, setDebounceValue] = useState(value);
+  useEffect(() => {
+    const timer = setTimeout(() => setDebounceValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debounceValue;
 }

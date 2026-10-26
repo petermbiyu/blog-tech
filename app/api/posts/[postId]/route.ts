@@ -81,7 +81,7 @@ export async function PATCH(
           where: { slug: uniqueslug, NOT: { id: postId } },
         })
       ) {
-        uniqueslug = `${baseSlug}-counter`;
+        uniqueslug = `${baseSlug}-${counter}`;
         counter++;
       }
       slug = uniqueslug;

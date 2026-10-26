@@ -99,7 +99,7 @@ const Edit = () => {
     if (postId) {
       fetchPost();
     }
-  }, []);
+  }, [postId]);
   if (loading) {
     return <EditPage />;
   }

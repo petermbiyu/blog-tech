@@ -3,7 +3,7 @@ import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
 import Link from "next/link";
 import { use } from "react";
-import { LuArrowLeft, LuPen, LuTrash } from "react-icons/lu";
+import { LuArrowLeft, LuPen } from "react-icons/lu";
 import DeletePost from "./deletePost";
 
 interface PostPromiseProp {
